@@ -1,22 +1,16 @@
 package org.kasador.realestatecompany.pool;
 
-import org.kasador.realestatecompany.domain.Person;
-import org.kasador.realestatecompany.domain.RentArea;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public interface Pool {
+public interface Pool<T> {
 
-    void add(RentArea rentArea);
+    void add(T t);
 
-    Optional<RentArea> findArea(String id);
+    Optional<T> find(String id);
 
-    Optional<RentArea> findFree(Class<? extends RentArea> type);
+    void remove(T t);
 
-    List<? extends RentArea> getAllPersonRentAreas(Person person);
-
-    void remove(RentArea rentArea);
-
-    List<? extends RentArea> getRentAreas();
+    List<? extends T> getAll();
 }

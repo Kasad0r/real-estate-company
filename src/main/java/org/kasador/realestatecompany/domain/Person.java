@@ -1,36 +1,41 @@
 package org.kasador.realestatecompany.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
-public class Person {
+@EqualsAndHashCode
+public class Person implements Serializable {
     private String id;
 
+    private String name;
+
+    private String surname;
+
+    private LocalDate birthday;
+
     private List<Apartment> apartments;
-    private List<File> billings;
+
+    private List<File> letters;
+
+    private String address;
+
+    private List<ParkingSpot> parkingSpot;
 
     public Person() {
-        billings = new ArrayList<>();
+        letters = new ArrayList<>();
         apartments = new ArrayList<>();
+        id = UUID.randomUUID().toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(id, person.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

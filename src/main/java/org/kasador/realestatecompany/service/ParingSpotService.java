@@ -1,11 +1,10 @@
 package org.kasador.realestatecompany.service;
 
-import org.kasador.realestatecompany.domain.Stuff;
+import org.kasador.realestatecompany.domain.ParkingSpot;
+import org.kasador.realestatecompany.domain.spotobjects.ParkingSpotObject;
 
 public interface ParingSpotService {
-    void addStuff(Stuff stuff);
+    void add(ParkingSpot parkingSpot,ParkingSpotObject obj);
 
-    void removeStuff(Stuff stuff);
-
-
+    void removeStuff(ParkingSpot parkingSpot,ParkingSpotObject obj);
 }
