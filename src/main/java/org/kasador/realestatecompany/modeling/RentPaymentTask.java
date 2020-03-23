@@ -21,7 +21,7 @@ public class RentPaymentTask extends TimerTask {
         this.rentAreaService = rentAreaService;
     }
 
-    @Override
+    @Override//TODO
     public void run() {
         List<? extends RentArea> collect = defaultPool.getAll().stream()
                 .filter(r -> r.getRentEndDate().isAfter(GlobalTimeTask.getCurrentDate())).collect(Collectors.toList());

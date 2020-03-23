@@ -26,7 +26,7 @@ public class PersonServiceImpl implements PersonService {
             person.getParkingSpot().remove(rentArea);
         }
     }
-
+/*
     @Override
     public void addLetter(Person person) {
 
@@ -37,7 +37,7 @@ public class PersonServiceImpl implements PersonService {
         person.getLetters().clear();
     }
 
- 
+ */
     @Override
     public void addRentArea(Person person, RentArea rentArea) {
         if (countApartments(person) + countParkingSpots(person) < 5) {

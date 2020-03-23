@@ -5,7 +5,7 @@ import org.kasador.realestatecompany.domain.RentArea;
 
 import java.util.List;
 
-interface Restorer {
+public interface Restorer {
 
     List<? extends RentArea> getRentAreas();
 
