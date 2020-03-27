@@ -35,7 +35,7 @@ public class RentArea implements Serializable {
     @Override
     public String toString() {
         return "RentArea{" +
-                "tenant=" + tenant +
+                "tenant=" + (tenant != null ? tenant.getId() : "") +
                 ", rentStartDate=" + rentStartDate +
                 ", rentEndDate=" + rentEndDate +
                 ", usableSpace=" + usableSpace +

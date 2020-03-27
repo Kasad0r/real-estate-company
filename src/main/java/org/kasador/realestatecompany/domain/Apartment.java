@@ -34,6 +34,13 @@ public class Apartment extends RentArea implements Serializable {
     @Override
     public String toString() {
         return "Apartment{" +
+                "tenant=" + (getTenant() != null ? getTenant().getId() : "") +
+                ", rentStartDate=" + getRentStartDate() +
+                ", rentEndDate=" + getRentEndDate() +
+                ", usableSpace=" + getUsableSpace() +
+                ", usedSpace=" + getUsedSpace() +
+                ", id='" + getId() + '\'' +
+                '}' +
                 "dwellers=" + dwellers +
                 '}';
     }

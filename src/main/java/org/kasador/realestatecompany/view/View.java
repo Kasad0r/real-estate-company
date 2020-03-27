@@ -3,7 +3,9 @@ package org.kasador.realestatecompany.view;
 import org.kasador.realestatecompany.domain.Apartment;
 import org.kasador.realestatecompany.domain.ParkingSpot;
 import org.kasador.realestatecompany.domain.Person;
-import org.kasador.realestatecompany.domain.RentArea;
+import org.kasador.realestatecompany.domain.spotobjects.Machine;
+import org.kasador.realestatecompany.domain.spotobjects.ParkingSpotObject;
+import org.kasador.realestatecompany.domain.spotobjects.Stuff;
 import org.kasador.realestatecompany.pool.PersonPool;
 import org.kasador.realestatecompany.pool.RentAreaPool;
 import org.kasador.realestatecompany.service.ParingSpotService;
@@ -11,9 +13,10 @@ import org.kasador.realestatecompany.service.PersonService;
 import org.kasador.realestatecompany.service.RentAreaService;
 import org.kasador.realestatecompany.tools.Restorer;
 import org.kasador.realestatecompany.tools.Saver;
+import org.w3c.dom.ls.LSOutput;
 
-import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -45,7 +48,7 @@ public class View {
     }
 
     public void start() {
-
+        sc = new Scanner(System.in);
         System.out.println("1.Data filler\n2.Information about the complex\n3.Log in\n0.Exit");
         switch (sc.nextInt()) {
             case 1:
@@ -54,6 +57,7 @@ public class View {
             case 2:
                 break;
             case 3:
+                login();
                 break;
             case 0:
                 exit();
@@ -64,8 +68,98 @@ public class View {
         }
     }
 
-    public static void choseMessage() {
-        System.out.println("Choose menu item");
+    private void login() {
+        System.out.println("Choose user 0.Exit:");
+        showPersonList();
+        int i = sc.nextInt();
+        if (i < 0 || i > personPool.getAll().size() - 1) {
+            System.out.println("Wrong person id");
+            login();
+        } else if (i == 0) {
+            exit();
+        }
+        personPage(personPool.getAll().get(i - 1));
+    }
+
+    private void personPage(Person person) {
+        System.out.println("Choose: \n1.Info \n2.Rent Area \n3. Apartments \n 4.Parking Spots \n5.Letters \n6. \n0.Exit");
+
+    }
+
+    private void showPersonInfo(Person person) {
+        System.out.println("name: " + person.getName() + " " + person.getSurname());
+        System.out.println("birthday: " + person.getBirthday());
+        System.out.println("address: " + person.getAddress());
+        System.out.println("apartments:");
+        if (person.getApartments().isEmpty() || person.getApartments().size() == 0) {
+            System.out.println("- none.");
+        } else {
+            List<Apartment> apartments = person.getApartments();
+
+            for (Apartment apartment : apartments) {
+                System.out.println("*id: " + apartment.getId());
+                System.out.println(" rent start date: " + apartment.getRentStartDate());
+                System.out.println(" rent end date: " + apartment.getRentEndDate());
+                System.out.println(" space used: " + apartment.getUsableSpace() + "/" + apartment.getUsedSpace());
+                System.out.println(" dwellers:");
+                if (apartment.getDwellers().isEmpty() || apartment.getDwellers().size() == 0) {
+                    System.out.println("  - none.");
+                } else {
+                    for (int j = 0; j < apartment.getDwellers().size(); j++) {
+                        var dweller = apartment.getDwellers().get(j);
+                        System.out.println("  id: " + dweller.getId() + " name: " + dweller.getName() + " " + dweller.getSurname());
+                    }
+                }
+            }
+        }
+        if (person.getParkingSpot().isEmpty() || person.getParkingSpot().size() == 0) {
+            System.out.println("- none.");
+        } else {
+            var parkingSpots = person.getParkingSpot();
+
+            for (ParkingSpot parkSpot : parkingSpots) {
+                System.out.println("*id: " + parkSpot.getId());
+                System.out.println(" rent start date: " + parkSpot.getRentStartDate());
+                System.out.println(" rent end date: " + parkSpot.getRentEndDate());
+                System.out.println(" space used: " + parkSpot.getUsableSpace() + "/" + parkSpot.getUsedSpace());
+                System.out.println(" spot stuff and vehicles:");
+                var parkingSpotObjects = parkSpot.getParkingSpotObject();
+
+                for (ParkingSpotObject parkingSpotObject : parkingSpotObjects) {
+
+                    if (parkingSpotObject instanceof Stuff) {
+                        Stuff stuff = (Stuff) parkingSpotObject;
+                        System.out.println("  -id: " + stuff.getId());
+                        System.out.println("  -name: " + stuff.getName());
+                        System.out.println("  -space occupation: " + stuff.getSpaceOccupation());
+                    } else if (parkingSpotObject instanceof Machine) {
+                        Machine machine = (Machine) parkingSpotObject;
+                        System.out.println("  -id: " + machine.getId());
+                        System.out.println("  -name: " + machine.getName());
+                        System.out.println("  -machine type: " + machine.getMachineType());
+                        System.out.println("  -engine capacity: " + machine.getEngineCapacity());
+                        System.out.println("  -engine type: " + machine.getEngineType());
+                        System.out.println("  -weels: " + machine.getWeels());
+                        System.out.println("  -space occupation" + machine.getSpaceOccupation());
+                    }
+
+                    System.out.println();
+                }
+                System.out.println();
+            }
+        }
+        System.out.println("letters: " + person.getLetters().size());
+
+    }
+
+
+    private void showPersonList() {
+        var persons = personPool.getAll();
+        for (int i = 0; i < persons.size(); i++) {
+            var person = persons.get(i);
+            System.out.println(i + 1 + ". " + person.getName() + " " + person.getSurname());
+
+        }
     }
 
     private void dataFillerMenu() {
@@ -91,18 +185,19 @@ public class View {
                 dataFillerMenu();
         }
     }
-    
+
 
     private void fillPerson() {
         Person person = new Person();
         System.out.println("Input name:");
-        person.setName(sc.nextLine());
-        System.out.println("Input surname");
-        person.setSurname(sc.nextLine());
-        System.out.println("Input birthday **/**/**** format");
-        person.setBirthday(LocalDate.parse(sc.nextLine()));
+        person.setName(sc.next());
+        System.out.println("Input surname:");
+        person.setSurname(sc.next());
+        System.out.println("Input birthday **/**/**** format:");
+        person.setBirthday(LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         personPool.add(person);
         successfulSaveMessage(person);
+        dataFillerMenu();
     }
 
     private void fillApartment() {

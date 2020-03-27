@@ -1,6 +1,6 @@
 package org.kasador.realestatecompany.tools;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kasador.realestatecompany.domain.RentArea;
 
 import java.util.List;

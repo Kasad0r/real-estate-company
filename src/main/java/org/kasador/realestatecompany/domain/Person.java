@@ -3,6 +3,7 @@ package org.kasador.realestatecompany.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.File;
 import java.io.Serializable;
@@ -34,8 +35,22 @@ public class Person implements Serializable {
 
     public Person() {
         letters = new ArrayList<>();
+        parkingSpot = new ArrayList<>();
         apartments = new ArrayList<>();
         id = UUID.randomUUID().toString();
     }
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthday=" + birthday +
+                ", apartments=" + apartments +
+                ", letters=" + letters +
+                ", address='" + address + '\'' +
+                ", parkingSpot=" + parkingSpot +
+                '}';
+    }
 }

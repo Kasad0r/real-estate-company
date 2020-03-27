@@ -1,7 +1,7 @@
 package org.kasador.realestatecompany.service.impl;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kasador.realestatecompany.domain.Apartment;
 import org.kasador.realestatecompany.domain.Person;
 import org.kasador.realestatecompany.domain.Reason;
@@ -24,8 +24,8 @@ public class LetterServiceImplTest {
         person.setSurname("Parker");
         apartment.setTenant(person);
         letterService.send(apartment, Reason.EVICTION_LETTER, "TEST EVICTION");
-        Assert.assertEquals(1, person.getLetters().size());
-        Assert.assertNotEquals(person.getLetters().get(0), null);
+        Assertions.assertEquals(1, person.getLetters().size());
+        Assertions.assertNotEquals(person.getLetters().get(0), null);
     }
 
 }

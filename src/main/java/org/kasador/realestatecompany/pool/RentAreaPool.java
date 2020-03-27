@@ -7,6 +7,7 @@ import org.kasador.realestatecompany.exception.PoolException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,8 @@ public class RentAreaPool implements Pool<RentArea>, Serializable, RentAreaAddon
 
     @Override
     public List<? extends RentArea> getAllPersonRentAreas(Person person) {
-        return rentAreas.stream().filter(r -> r.getTenant().equals(person)).collect(Collectors.toList());
+        return rentAreas.stream().filter(r -> r.getTenant()!=null && r.getTenant().getId().equals(person.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
