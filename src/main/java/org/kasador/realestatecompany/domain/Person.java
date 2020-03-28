@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.kasador.realestatecompany.tools.AddressMockGenerator;
 
 import java.io.File;
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class Person implements Serializable {
         parkingSpot = new ArrayList<>();
         apartments = new ArrayList<>();
         id = UUID.randomUUID().toString();
+        address = new AddressMockGenerator().generateAddress();
     }
 
     @Override

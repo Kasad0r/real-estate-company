@@ -31,22 +31,22 @@ class RentAreaPoolTest {
 
     @Test
     public void tryGetParkingSpotFromPool() {
-        Optional<RentArea> free = rentAreaPool.findFree(ParkingSpot.class);
+        Optional<RentArea> free = rentAreaPool.getFree(ParkingSpot.class);
         Assertions.assertTrue(free.isPresent());
         Assertions.assertEquals(ParkingSpot.class, free.get().getClass());
     }
 
     @Test
     public void tryGetApartmentsFromPool() {
-        Optional<RentArea> free = rentAreaPool.findFree(Apartment.class);
+        Optional<RentArea> free = rentAreaPool.getFree(Apartment.class);
         Assertions.assertTrue(free.isPresent());
         Assertions.assertEquals(Apartment.class, free.get().getClass());
     }
 
     @Test
     public void tryGetAllPersonRentAreas() {
-        rentAreaPool.findFree(Apartment.class).get().setTenant(person);
-        rentAreaPool.findFree(ParkingSpot.class).get().setTenant(person);
+        rentAreaPool.getFree(Apartment.class).get().setTenant(person);
+        rentAreaPool.getFree(ParkingSpot.class).get().setTenant(person);
         List<? extends RentArea> allPersonRentAreas = rentAreaPool.getAllPersonRentAreas(person);
         Assertions.assertEquals(2, allPersonRentAreas.size());
     }

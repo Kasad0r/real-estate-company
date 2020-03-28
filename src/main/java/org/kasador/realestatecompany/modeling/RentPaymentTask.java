@@ -2,7 +2,6 @@ package org.kasador.realestatecompany.modeling;
 
 import org.kasador.realestatecompany.domain.RentArea;
 import org.kasador.realestatecompany.pool.RentAreaPool;
-import org.kasador.realestatecompany.pool.Pool;
 import org.kasador.realestatecompany.service.RentAreaService;
 import org.kasador.realestatecompany.service.LetterService;
 import org.kasador.realestatecompany.domain.Reason;

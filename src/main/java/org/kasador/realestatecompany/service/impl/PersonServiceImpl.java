@@ -6,62 +6,48 @@ import org.kasador.realestatecompany.domain.Person;
 import org.kasador.realestatecompany.domain.RentArea;
 import org.kasador.realestatecompany.exception.PoolException;
 import org.kasador.realestatecompany.exception.ProblematicTenantException;
+import org.kasador.realestatecompany.exception.TooManyLettersException;
+import org.kasador.realestatecompany.modeling.GlobalTimeTask;
 import org.kasador.realestatecompany.pool.PersonPool;
+import org.kasador.realestatecompany.pool.RentAreaPool;
 import org.kasador.realestatecompany.service.PersonService;
 
 import java.time.LocalDate;
 
 public class PersonServiceImpl implements PersonService {
-    private final PersonPool personPool;
-
-    public PersonServiceImpl() {
-        this.personPool = PersonPool.getInstance();
-    }
 
     @Override
-    public void removeRentArea(Person person, RentArea rentArea) {
-        if (rentArea instanceof Apartment) {
-            person.getApartments().remove(rentArea);
-        } else if (rentArea instanceof ParkingSpot) {
-            person.getParkingSpot().remove(rentArea);
+    public void addRentArea(Person person, RentArea rentArea)
+            throws
+            ProblematicTenantException,
+            PoolException,
+            TooManyLettersException {
+
+        if (person.getLetters().size() >= 3) {
+            throw new TooManyLettersException("You have more then 3 letters");
         }
-    }
-/*
-    @Override
-    public void addLetter(Person person) {
-
-    }
-
-    @Override
-    public void removeLetters(Person person) {
-        person.getLetters().clear();
-    }
-
- */
-    @Override
-    public void addRentArea(Person person, RentArea rentArea) {
-        if (countApartments(person) + countParkingSpots(person) < 5) {
+        if (countApartments(person) + countParkingSpots(person) <= 5) {
             if (rentArea instanceof Apartment) {
                 person.getApartments().add((Apartment) rentArea);
+                rentArea.setTenant(person);
+                rentArea.setRentStartDate(GlobalTimeTask.getCurrentDate());
+                rentArea.setRentEndDate(GlobalTimeTask.getCurrentDate().plusDays(30));
             } else if (rentArea instanceof ParkingSpot) {
                 if (!person.getApartments().isEmpty()) {
                     person.getParkingSpot().add((ParkingSpot) rentArea);
-                } else throw new ProblematicTenantException("Need 1 or more Apartments for Parking Spot");
+                    rentArea.setTenant(person);
+                    rentArea.setRentStartDate(GlobalTimeTask.getCurrentDate());
+                    rentArea.setRentEndDate(GlobalTimeTask.getCurrentDate().plusDays(30));
+                } else {
+                    throw new ProblematicTenantException("Need 1 or more Apartments for Parking Spot");
+                }
             }
+            RentAreaPool.getInstance().find(rentArea.getId()).ifPresent(rentArea1 -> rentArea.setTenant(person));
         } else {
             throw new PoolException("Couldn’t rent more than 5 areas.");
         }
     }
 
-    @Override
-    public Person createPerson(String name, String surname, LocalDate birthday) {
-        var per = new Person();
-        per.setSurname(surname);
-        per.setName(name);
-        per.setBirthday(birthday);
-        personPool.add(per);
-        return per;
-    }
 
     private Integer countApartments(Person person) {
         return person.getApartments().size();

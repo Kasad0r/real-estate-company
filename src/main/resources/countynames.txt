@@ -1,0 +1,108 @@
+Bedfordshire
+Berkshire
+Buckinghamshire
+Cambridgeshire
+Channel Isles
+Cheshire
+Cornwall
+County Durham
+Cumberland
+Cumbria
+Derbyshire
+Devon
+Dorset
+East Sussex
+Essex
+Gloucestershire
+Hampshire
+Herefordshire
+Hertfordshire
+Huntingdonshire
+Isle of Man
+Isle of Wight
+Kent
+Lancashire
+Leicestershire
+Lincolnshire
+London
+Manchester
+Middlesex
+Norfolk
+Northamptonshire
+Northumberland
+Nottinghamshire
+Oxfordshire
+Rutland
+Shropshire
+Somerset
+Staffordshire
+Suffolk
+Surrey
+Sussex
+Warwickshire
+Westmorland
+Wiltshire
+Worcestershire
+Yorkshire
+Aberdeenshire
+Angus
+Argyllshire
+Ayrshire
+Banffshire
+Berwickshire
+Buteshire
+Caithness
+Clackmannanshire
+Dumfriesshire
+Dunbartonshire
+East Lothian
+Fife
+Glasgow
+Inverness-shire
+Kincardineshire
+Kirkcudbrightshire
+Lanarkshire
+Linlithgowshire
+Midlothian
+Moray
+Nairnshire
+Orkney Islands
+Peeblesshire
+Perthshire
+Renfrewshire
+Ross and Cromarty
+Roxburghshire
+Scotland
+Selkirkshire
+Shetland
+Stirlingshire
+Sutherland
+West Lothian
+Wigtownshire
+Anglesey
+Brecknockshire
+Caernarvonshire
+Cardiganshire
+Carmarthenshire
+Denbighshire
+Flintshire
+Glamorgan
+Gwent
+Merionethshire
+Monmouthshire
+Pembrokeshire
+Radnorshire
+Armagh
+County Antrim
+County Clare
+County Cork
+County Down
+County Kildare
+County Laois
+County Limerick
+County Monaghan
+County Tipperary
+County Tyrone
+County Waterford
+County Wexford
+County Wicklow

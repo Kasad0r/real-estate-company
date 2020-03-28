@@ -1,6 +1,5 @@
 package org.kasador.realestatecompany.tools;
 
-import org.kasador.realestatecompany.domain.RentArea;
 import org.kasador.realestatecompany.pool.PersonPool;
 import org.kasador.realestatecompany.pool.RentAreaPool;
 
@@ -28,7 +27,7 @@ public class StandardSaver implements Saver {
     @Override
     public void saveAllData() {
         saveRentAreaData();
-        saveUserViewData();
+        savePersons();
     }
 
     @Override

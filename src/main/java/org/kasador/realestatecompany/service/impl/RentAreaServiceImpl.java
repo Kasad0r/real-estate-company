@@ -27,7 +27,7 @@ public class RentAreaServiceImpl implements RentAreaService {
         try {
             letterService.removeOldApartmentLetters(rentArea);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("No letter to remove...");
         }
         if (rentArea instanceof Apartment) {
             ((Apartment) rentArea).setDwellers(new ArrayList<>());
@@ -38,5 +38,15 @@ public class RentAreaServiceImpl implements RentAreaService {
         }
         rentArea.setTenant(null);
 
+    }
+
+    @Override
+    public void extendRent(RentArea rentArea, int days) {
+        rentArea.setRentEndDate(rentArea.getRentEndDate().plusDays(days));
+    }
+
+    @Override
+    public void addDweller(Apartment a, Person dwellerToAdd) {
+        a.getDwellers().add(dwellerToAdd);
     }
 }

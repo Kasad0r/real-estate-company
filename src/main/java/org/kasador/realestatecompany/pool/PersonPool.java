@@ -22,11 +22,11 @@ public class PersonPool implements Pool<Person>, Serializable {
     }
 
     @Override
-    public void add(Person person) {
+    public void add(Person person) throws PoolException {
         if (find(person.getId()).isEmpty()) {
             persons.add(person);
         } else {
-            throw new PoolException("Person already exist "+ person);
+            throw new PoolException("Person already exist " + person);
         }
     }
 
@@ -44,4 +44,11 @@ public class PersonPool implements Pool<Person>, Serializable {
     public List<? extends Person> getAll() {
         return persons;
     }
+
+    @Override
+    public void restore(List<? extends Person> poolBackup) {
+        persons.addAll(poolBackup);
+    }
+
+
 }
