@@ -15,7 +15,7 @@ public class TaskInit {
 
     public void init() {
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new RentPaymentTask(new LetterServiceImpl(), rentAreaService), 50, 5000);
+        timer.scheduleAtFixedRate(new RentPaymentTask(new LetterServiceImpl(), rentAreaService), 50, 10000);
         timer.scheduleAtFixedRate(new GlobalTimeTask(), 50, 5000);
     }
 }

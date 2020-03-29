@@ -1,5 +1,6 @@
 package org.kasador.realestatecompany;
 
+import org.kasador.realestatecompany.modeling.TaskInit;
 import org.kasador.realestatecompany.pool.PersonPool;
 import org.kasador.realestatecompany.pool.RentAreaPool;
 import org.kasador.realestatecompany.service.impl.LetterServiceImpl;
@@ -28,7 +29,7 @@ public class Main {
             RentAreaPool.getInstance());
 
     public static void main(String[] args) throws IOException {
-        //  new TaskInit(rentAreaService).init();
+        new TaskInit(new RentAreaServiceImpl(new LetterServiceImpl())).init();
         contextPool.init();
         view.start();
         //    Runtime.getRuntime().addShutdownHook(new Thread(() -> new StandardSaver().saveAllData()));

@@ -22,13 +22,19 @@ public class RentPaymentTask extends TimerTask {
 
     @Override//TODO
     public void run() {
-        List<? extends RentArea> collect = defaultPool.getAll().stream()
-                .filter(r -> r.getRentEndDate().isAfter(GlobalTimeTask.getCurrentDate())).collect(Collectors.toList());
+        List<? extends RentArea> collect = defaultPool.getAll()
+                .stream()
+                .filter(r -> r != null && r.getRentEndDate() != null && !r.getRentEndDate().isAfter(GlobalTimeTask.getCurrentDate()))
+                .collect(Collectors.toList());
+        collect
+                .forEach(r -> letterService.send(r, Reason.NON_PAY_WARN, "You need to pay rent. After 30 days we evict from rent area"));
 
-        collect.stream().filter(r -> r.getRentEndDate().plusDays(30).isAfter(GlobalTimeTask.getCurrentDate()))
+        collect
+                .stream()
+                .filter(r -> r != null && r.getRentEndDate() != null && r.getRentEndDate().plusDays(30).isAfter(GlobalTimeTask.getCurrentDate()))
                 .forEach(r -> {
                     letterService.send(r, Reason.EVICTION_LETTER, "Expired rent date over 30 days");
-                    rentAreaService.evictRentArea(r);
+                    rentAreaService.autoEvictRentArea(r);
                 });
     }
 }

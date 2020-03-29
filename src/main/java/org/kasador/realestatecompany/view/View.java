@@ -18,6 +18,9 @@ import org.kasador.realestatecompany.service.RentAreaService;
 import org.kasador.realestatecompany.tools.MockItemAndVehicleGenerator;
 import org.kasador.realestatecompany.tools.Saver;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -113,6 +116,12 @@ public class View {
                 chooseParkingSpotForControlPanel(person);
                 break;
             case 5:
+                try {
+                    showAllLetters(person);
+                } catch (IOException e) {
+                    out.println("Something went wrong");
+                    personPage(person);
+                }
                 break;
             case 6:
                 start();
@@ -123,6 +132,22 @@ public class View {
             default:
                 personPage(person);
 
+        }
+    }
+
+    private void showAllLetters(Person person) throws IOException {
+        var letters = person.getLetters();
+        if (!letters.isEmpty()) {
+            for (var letter : letters) {
+                out.println("letter name: " + letter.getName().replace(".txt", "") + " text: ");
+                for (String s : Files.readAllLines(letter.toPath())) {
+                    out.println("    \t" + s);
+                }
+                personPage(person);
+            }
+        } else {
+            out.println("You have no letters.");
+            personPage(person);
         }
     }
 
@@ -167,7 +192,7 @@ public class View {
                 break;
             case 2:
                 out.println("Remove dweller:");
-                Person dwellerToRemove = choosePersonFromList();
+                var dwellerToRemove = choosePersonFromList();
                 rentAreaService.removeDweller(a, dwellerToRemove);
                 out.println(dwellerToRemove.getName() + " " + dwellerToRemove.getSurname() + " removed from apartment with id:" + a.getId());
                 apartmentController(a);
@@ -248,7 +273,7 @@ public class View {
 
     private void addMachineToParkingSpot(ParkingSpot parkingSpot) {
         out.println("Choose a machine: (0.Back)");
-        List<Machine> machines = MockItemAndVehicleGenerator.machines;
+        var machines = MockItemAndVehicleGenerator.machines;
         machines.sort(Comparator.comparing(Machine::getSpaceOccupation).reversed());
         for (int i = 0; i < machines.size(); i++) {
             out.println(i + 1 + ". " + machines.get(i));
@@ -274,7 +299,7 @@ public class View {
 
     private void addStuffToParkingSpot(ParkingSpot parkingSpot) {
         out.println("Choose a stuff: (0.Back)");
-        List<Stuff> stuffs = MockItemAndVehicleGenerator.stuffs;
+        var stuffs = MockItemAndVehicleGenerator.stuffs;
         stuffs.sort(Comparator.comparing(Stuff::getSpaceOccupation).reversed());
         for (int i = 0; i < stuffs.size(); i++) {
             out.println(i + 1 + ". " + stuffs.get(i));
@@ -331,6 +356,9 @@ public class View {
             case 0:
                 exit();
                 break;
+            default:
+                out.println("Wrong argument choose");
+                personPage(person);
         }
 
     }
@@ -351,7 +379,7 @@ public class View {
             showParkingSpotRenting(person);
         }
 
-        ParkingSpot parkingSpot = freeParkSpots.get(choice - 1);
+        var parkingSpot = freeParkSpots.get(choice - 1);
         try {
             personService.addRentArea(person, parkingSpot);
             out.println("You successful rent a parking spot.");
@@ -370,7 +398,7 @@ public class View {
 
     public void showApartmentsRenting(Person person) {
         out.println("Choose apartments: 0.Back");
-        List<Apartment> allFreeApartments = rentAreaPool.getAllFreeApartments();
+        var allFreeApartments = rentAreaPool.getAllFreeApartments();
         allFreeApartments.sort((Comparator.comparing(Apartment::getUsableSpace)));
         for (int i = 0; i < allFreeApartments.size(); i++) {
             out.println((i + 1) + ". usable space: " + allFreeApartments.get(i).getUsableSpace() + ", cost: " + new Random().nextInt(1000) + "$");
@@ -426,12 +454,12 @@ public class View {
     private void showPersonParkingSpotsList(List<ParkingSpot> parkingSpots, boolean indexPresenter) {
         parkingSpots.sort(Comparator.comparing(ParkingSpot::getUsableSpace).reversed());
         for (int i = 0; i < parkingSpots.size(); i++) {
-            ParkingSpot parkSpot = parkingSpots.get(i);
+            var parkSpot = parkingSpots.get(i);
             if (indexPresenter) out.println(i + 1 + ".");
             out.println("*id: " + parkSpot.getId());
             out.println(" rent start date: " + parkSpot.getRentStartDate());
             out.println(" rent end date: " + parkSpot.getRentEndDate());
-            out.println(" space used: " + parkSpot.getUsableSpace() + "/" + parkSpot.getUsedSpace());
+            out.println(" space used: " + parkSpot.getUsableSpace() + "/" + parkSpot.getUsedSpace() + " square meters");
             out.println(" spot stuff and vehicles:");
             var parkingSpotObjects = parkSpot.getParkingSpotObject();
             if (parkingSpotObjects.isEmpty()) {
@@ -439,22 +467,22 @@ public class View {
                 out.println();
                 break;
             }
-            for (ParkingSpotObject parkingSpotObject : parkingSpotObjects) {
+            for (var parkingSpotObject : parkingSpotObjects) {
 
                 if (parkingSpotObject instanceof Stuff) {
-                    Stuff stuff = (Stuff) parkingSpotObject;
+                    var stuff = (Stuff) parkingSpotObject;
                     out.println("  -id: " + stuff.getId());
                     out.println("  -name: " + stuff.getName());
-                    out.println("  -capacity: " + stuff.getSpaceOccupation());
+                    out.println("  -takes places: " + stuff.getSpaceOccupation() + " square meters");
                 } else if (parkingSpotObject instanceof Machine) {
-                    Machine machine = (Machine) parkingSpotObject;
+                    var machine = (Machine) parkingSpotObject;
                     out.println("  -id: " + machine.getId());
                     out.println("  -name: " + machine.getName());
                     out.println("  -machine type: " + machine.getMachineType());
                     out.println("  -engine capacity: " + machine.getEngineCapacity());
                     out.println("  -engine type: " + machine.getEngineType());
                     out.println("  -weels: " + machine.getWeels());
-                    out.println("  -capacity: " + machine.getSpaceOccupation());
+                    out.println("  -takes places: " + machine.getSpaceOccupation() + " square meters");
                 }
 
                 out.println();
@@ -468,11 +496,11 @@ public class View {
         for (int i = 0; i < apartments.size(); i++) {
             if (indexShower)
                 out.println(i + 1 + ".");
-            Apartment apartment = apartments.get(i);
+            var apartment = apartments.get(i);
             out.println("*id: " + apartment.getId());
             out.println(" rent start date: " + apartment.getRentStartDate());
             out.println(" rent end date: " + apartment.getRentEndDate());
-            out.println(" space used: " + apartment.getUsableSpace() + "/" + apartment.getUsedSpace());
+            out.println(" apartment size: " + apartment.getUsableSpace() + " square meters");
             out.println(" dwellers:");
             if (apartment.getDwellers().isEmpty() || apartment.getDwellers().size() == 0) {
                 out.println("  - none.");
@@ -519,7 +547,7 @@ public class View {
 
 
     private void fillPerson() throws PoolException {
-        Person person = new Person();
+        var person = new Person();
         out.println("Input name:");
         person.setName(sc.next());
         out.println("Input surname:");

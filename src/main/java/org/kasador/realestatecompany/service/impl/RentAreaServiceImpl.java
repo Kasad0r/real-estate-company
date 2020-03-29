@@ -1,9 +1,8 @@
 package org.kasador.realestatecompany.service.impl;
 
-import org.kasador.realestatecompany.domain.Apartment;
-import org.kasador.realestatecompany.domain.ParkingSpot;
-import org.kasador.realestatecompany.domain.Person;
-import org.kasador.realestatecompany.domain.RentArea;
+import org.kasador.realestatecompany.domain.*;
+import org.kasador.realestatecompany.domain.spotobjects.Machine;
+import org.kasador.realestatecompany.domain.spotobjects.ParkingSpotObject;
 import org.kasador.realestatecompany.service.LetterService;
 import org.kasador.realestatecompany.service.RentAreaService;
 
@@ -48,5 +47,20 @@ public class RentAreaServiceImpl implements RentAreaService {
     @Override
     public void addDweller(Apartment a, Person dwellerToAdd) {
         a.getDwellers().add(dwellerToAdd);
+    }
+
+    @Override
+    public void autoEvictRentArea(RentArea rentArea) {
+        if (rentArea instanceof ParkingSpot) {
+            ParkingSpot parkSpot = (ParkingSpot) rentArea;
+            for (ParkingSpotObject parObj : parkSpot.getParkingSpotObject()) {
+                if (parObj instanceof Machine) {
+                    parkSpot.getParkingSpotObject().remove(parObj);
+                    letterService.send(rentArea, Reason.CAR_SOLD, "We sold your car and extent your rent for 2 months.");
+                    extendRent(rentArea, 60);
+                    break;
+                }
+            }
+        }
     }
 }

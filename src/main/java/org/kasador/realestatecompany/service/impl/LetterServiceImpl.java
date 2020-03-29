@@ -3,6 +3,7 @@ package org.kasador.realestatecompany.service.impl;
 import org.kasador.realestatecompany.domain.Person;
 import org.kasador.realestatecompany.domain.Reason;
 import org.kasador.realestatecompany.domain.RentArea;
+import org.kasador.realestatecompany.modeling.GlobalTimeTask;
 import org.kasador.realestatecompany.service.LetterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.util.Random;
 
 public class LetterServiceImpl implements LetterService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LetterServiceImpl.class);
@@ -28,8 +30,10 @@ public class LetterServiceImpl implements LetterService {
 
                 LOGGER.debug(
                         MessageFormat
-                                .format("SEND LETTER to:{0}message: {1}",
-                                        rentArea.getTenant().getId(), message));
+                                .format("SEND LETTER to:{2} , {0} message: {1}",
+                                        rentArea.getTenant().getId(),
+                                        message, rentArea.getTenant().getName() +
+                                                " " + rentArea.getTenant().getSurname()));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -73,7 +77,8 @@ public class LetterServiceImpl implements LetterService {
         return Paths.get(personDirectory.toString() +
                 "/" + reason.name() +
                 "_" + rentArea.getId() +
-                "_" + LocalDate.now() +
+                "_" + GlobalTimeTask.getCurrentDate() +
+                "___" + new Random().nextInt(50) +
                 ".txt");
     }
 }

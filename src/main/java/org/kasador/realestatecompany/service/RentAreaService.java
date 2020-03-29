@@ -12,4 +12,6 @@ public interface RentAreaService {
     void extendRent(RentArea rentArea, int days);
 
     void addDweller(Apartment a, Person dwellerToAdd);
+
+    void autoEvictRentArea(RentArea rentArea);
 }
