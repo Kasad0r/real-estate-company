@@ -11,4 +11,9 @@ public class Stuff extends ParkingSpotObject implements Serializable {
     public Stuff(String name, Double spaceOccupation) {
         super(name, spaceOccupation);
     }
+
+    @Override
+    public String toString() {
+        return "Stuff name: " + getName() + ", capacity: " + getSpaceOccupation();
+    }
 }

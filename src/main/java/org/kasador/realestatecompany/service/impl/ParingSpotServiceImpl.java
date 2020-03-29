@@ -7,7 +7,7 @@ import org.kasador.realestatecompany.service.ParingSpotService;
 
 public class ParingSpotServiceImpl implements ParingSpotService {
     @Override
-    public void add(ParkingSpot parkingSpot, ParkingSpotObject obj) {
+    public void add(ParkingSpot parkingSpot, ParkingSpotObject obj) throws TooManyThingsException {
         if (parkingSpot.getUsedSpace() + obj.getSpaceOccupation() > parkingSpot.getUsableSpace()) {
             throw new TooManyThingsException();
         }

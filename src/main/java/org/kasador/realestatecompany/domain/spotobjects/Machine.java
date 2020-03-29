@@ -12,6 +12,14 @@ public class Machine extends ParkingSpotObject implements Serializable {
 
     private MachineType machineType;
 
+    public Machine(String name, Double spaceOccupation, Integer weels, MachineType machineType, EngineType engineType, Double engineCapacity) {
+        super(name, spaceOccupation);
+        this.weels = weels;
+        this.machineType = machineType;
+        this.engineType = engineType;
+        this.engineCapacity = engineCapacity;
+    }
+
     private EngineType engineType;
 
     private Double engineCapacity;
@@ -20,5 +28,8 @@ public class Machine extends ParkingSpotObject implements Serializable {
         super(name, spaceOccupation);
     }
 
-
+    @Override
+    public String toString() {
+        return "Machine name:" + getName() + ", machineType:" + machineType + ", engineType:" + engineType + ", engineCapacity:" + engineCapacity;
+    }
 }

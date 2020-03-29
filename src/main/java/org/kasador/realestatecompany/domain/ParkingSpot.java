@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 @Setter
 public class ParkingSpot extends RentArea implements Serializable {
@@ -19,6 +20,14 @@ public class ParkingSpot extends RentArea implements Serializable {
                        Double usableSpace) {
         super(rentStartDate, rentEndDate, usableSpace);
         this.parkingSpotObject = new ArrayList<>();
+    }
+
+    public Double getUsedSpace() {
+        usedSpace = 0.0;
+        for (ParkingSpotObject spotObject : parkingSpotObject) {
+            usedSpace += spotObject.getSpaceOccupation();
+        }
+        return usedSpace;
     }
 
     public ParkingSpot(LocalDate rentStartDate,

@@ -20,10 +20,11 @@ public class RentArea implements Serializable {
 
     private final Double usableSpace;
 
-    private Double usedSpace = 0.0;
+    protected Double usedSpace = 0.0;
+
+
 
     private final String id;
-
 
     public RentArea(LocalDate rentStartDate, LocalDate rentEndDate, Double usableSpace) {
         this.rentStartDate = rentStartDate;

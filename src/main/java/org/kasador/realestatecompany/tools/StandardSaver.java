@@ -35,7 +35,6 @@ public class StandardSaver implements Saver {
 
         try (var fos = new FileOutputStream(rentAreaPoolPath);
              var oos = new ObjectOutputStream(fos)) {
-            System.out.println(RentAreaPool.getInstance().getAll());
             oos.writeObject(RentAreaPool.getInstance().getAll());
         } catch (IOException e) {
             e.printStackTrace();
